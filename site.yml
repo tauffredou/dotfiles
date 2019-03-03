@@ -1,0 +1,24 @@
+- hosts: localhost
+  tasks:
+  # Create groups based on the machine architecture
+  - group_by:
+      key: model_{{ ansible_product_name }}
+
+- hosts: model_XPS-15-9570
+  tasks:
+  - package:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - unclutter
+      - firefox 
+      - scrot
+      - mpd
+      - mpc
+      - dmenu
+      - xsel
+      - slock
+    become: yes
+
+  - template: { src: zshrc.j2, dest: ~/.zshrc }
+  - template: { src: .config/rc.lua.j2, dest: ~/.config/awesome/rc.lua }
