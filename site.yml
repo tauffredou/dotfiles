@@ -4,22 +4,26 @@
   - group_by:
       key: model_{{ ansible_product_name }}
 
-- hosts: model_XPS-15-9570
-  tasks:
-  - package:
-      name: "{{ item }}"
-      state: present
-    with_items:
-      - unclutter
-      - firefox 
-      - scrot
-      - mpd
-      - mpc
-      - dmenu
-      - xsel
-      - slock
+  - name: Install system
+    pacman:
+      name: networkmanager
+    become: yes
+
+  - name: Install WM
+    pacman:
+      name: xorg-server,awesome,awesome-terminal-fonts,rxvt-unicode-truecolor,unclutter,scrot,mpd,mpc,dmenu,xsel,slock,xscreensaver
+    become: yes
+
+  - name: Install tools
+    pacman:
+      name: firefox
     become: yes
 
   - template: { src: zshrc.j2, dest: ~/.zshrc }  
   - template: { src: .Xdefaults.j2, dest: ~/.Xdefaults }
   - template: { src: .config/rc.lua.j2, dest: ~/.config/awesome/rc.lua }
+
+  - debug: 
+      msg: "{{ ansible_product_name }}"
+
+  - include_tasks: "model_playbooks/{{ ansible_product_name }}.yml"
