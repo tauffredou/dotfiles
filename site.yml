@@ -20,5 +20,6 @@
       - slock
     become: yes
 
-  - template: { src: zshrc.j2, dest: ~/.zshrc }
+  - template: { src: zshrc.j2, dest: ~/.zshrc }  
+  - template: { src: .Xdefaults.j2, dest: ~/.Xdefaults }
   - template: { src: .config/rc.lua.j2, dest: ~/.config/awesome/rc.lua }
